@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,45 +8,45 @@
 </head>
 <body>
 
-<div class="header">
-<span>Campus Poll</span>
-<div>
-<button onclick="openMsg()">Message Admin</button>
-<button class="adminBtn" onclick="adminMode()">Admin</button>
-<button onclick="logout()">Logout</button>
-</div>
-</div>
+<h2>Campus Poll System</h2>
 
-<div class="container">
-
-<div id="loginBox" class="card">
-<h3>Login</h3>
-<input id="username" placeholder="username">
-<input id="password" type="password">
-<button onclick="login()">Login</button>
+<!-- Login Box -->
+<div id="loginBox">
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
 </div>
 
-<div id="adminBox" class="card" style="display:none">
-<h3>Admin Post</h3>
-<textarea id="postText"></textarea>
-<button onclick="addPost()">Post</button>
+<!-- Admin Panel Button -->
+<div style="margin-bottom:20px;">
+  <button onclick="adminMode()">Admin Panel</button>
 </div>
 
-<div id="messageBox" class="card" style="display:none">
-<h3>Message to Admin</h3>
-<textarea id="msgText"></textarea>
-<button onclick="sendMsg()">Send</button>
+<!-- Admin Post Box -->
+<div id="adminBox" style="display:none">
+  <textarea id="postText" placeholder="Write post"></textarea>
+  <button onclick="addPost()">Post</button>
 </div>
 
-<div id="adminMsgBox" class="card" style="display:none">
-<h3>Admin Inbox</h3>
-<div id="adminMessages"></div>
-</div>
-
+<!-- Posts Container -->
 <div id="posts" style="display:none"></div>
 
+<!-- Admin Messages -->
+<div id="adminMsgBox" style="display:none">
+  <h3>Messages from Users</h3>
+  <div id="adminMessages"></div>
 </div>
 
+<!-- User Message Box -->
+<div id="messageBox" style="display:none">
+  <textarea id="msgText" placeholder="Send message to admin"></textarea>
+  <button onclick="sendMsg()">Send Message</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
