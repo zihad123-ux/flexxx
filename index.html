@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Poll</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+<span>Campus Poll</span>
+<div>
+<button onclick="openMsg()">Message Admin</button>
+<button class="adminBtn" onclick="adminMode()">Admin</button>
+<button onclick="logout()">Logout</button>
+</div>
+</div>
+
+<div class="container">
+
+<div id="loginBox" class="card">
+<h3>Login</h3>
+<input id="username" placeholder="username">
+<input id="password" type="password">
+<button onclick="login()">Login</button>
+</div>
+
+<div id="adminBox" class="card" style="display:none">
+<h3>Admin Post</h3>
+<textarea id="postText"></textarea>
+<button onclick="addPost()">Post</button>
+</div>
+
+<div id="messageBox" class="card" style="display:none">
+<h3>Message to Admin</h3>
+<textarea id="msgText"></textarea>
+<button onclick="sendMsg()">Send</button>
+</div>
+
+<div id="adminMsgBox" class="card" style="display:none">
+<h3>Admin Inbox</h3>
+<div id="adminMessages"></div>
+</div>
+
+<div id="posts" style="display:none"></div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
