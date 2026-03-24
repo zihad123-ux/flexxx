@@ -1,84 +1,14 @@
-body{
-font-family:Arial;
-background:#f0f2f5;
-margin:0;
-}
-
-.header{
-background:#1877f2;
-color:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
-}
-
-.container{
-max-width:600px;
-margin:20px auto;
-padding:10px;
-}
-
-.card{
-background:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-}
-
-button{
-background:#1877f2;
-color:white;
-border:none;
-padding:8px 12px;
-border-radius:6px;
-cursor:pointer;
-margin-top:5px;
-}
-
-.disagree{
-background:red;
-}
-
-.adminBtn{
-background:black;
-}
-
-.bar{
-height:8px;
-background:#ddd;
-border-radius:10px;
-margin-top:5px;
-overflow:hidden;
-}
-
-.agreeBar{
-height:8px;
-background:#1877f2;
-}
-
-.disagreeBar{
-height:8px;
-background:red;
-}
-
-input,textarea{
-width:100%;
-padding:10px;
-margin-top:5px;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
-.comment{
-background:#eee;
-padding:5px;
-margin-top:5px;
-border-radius:5px;
-}
-
-.msg{
-background:#f1f1f1;
-padding:8px;
-border-radius:6px;
-margin-top:5px;
+body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px;}
+#loginBox, #adminBox, #messageBox, #posts, #adminMsgBox { margin-bottom:20px;}
+textarea, input { width:100%; padding:8px; margin:5px 0; box-sizing:border-box;}
+button { padding:6px 12px; margin:3px; cursor:pointer;}
+.card { background:#fff; padding:10px; margin:10px 0; border-radius:5px; box-shadow:0 0 5px #aaa;}
+.bar { background:#ddd; height:10px; width:100%; border-radius:5px; margin:3px 0;}
+.agreeBar { background:green; height:10px; border-radius:5px;}
+.disagreeBar { background:red; height:10px; border-radius:5px;}
+.comment { font-size:0.9em; margin-left:10px;}
+.comments input { width:75%; display:inline-block;}
+.comments button { width:22%; display:inline-block;}
+@media(max-width:600px){
+  .comments input, .comments button { width:100%; margin:2px 0; display:block; }
 }
