@@ -89,10 +89,8 @@ let html=""
 posts.forEach((p,i)=>{
 
 let total=p.agree+p.disagree
-
 let agreePercent= total? Math.round((p.agree/total)*100):0
 let disagreePercent= total? Math.round((p.disagree/total)*100):0
-
 let voted=p.voted.includes(user)
 
 html+=`
@@ -111,8 +109,8 @@ html+=`
 
 ${isAdmin ? `
 <div style="margin-top:10px">
-<button onclick="editPost(${i})">✏️ Edit</button>
-<button class="disagree" onclick="del(${i})">🗑 Delete</button>
+<button onclick="editPost(${i})">Edit</button>
+<button class="disagree" onclick="deletePost(${i})">Delete</button>
 </div>
 ` : ''}
 
@@ -126,17 +124,11 @@ ${agreePercent}% Agree
 </div>
 ${disagreePercent}% Disagree
 
-<div style="margin-top:10px">
-<input id="c${i}" placeholder="comment">
-<button onclick="comment(${i})">Comment</button>
-</div>
-
-${p.comments.map(c=>`<div class="comment">${c}</div>`).join("")}
-
 </div>
 `
 })
 
+document.getElementById("posts").style.display="block"
 document.getElementById("posts").innerHTML=html
 }
 
