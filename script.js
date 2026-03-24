@@ -8,64 +8,70 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 const db = firebase.firestore();
 
-// 🔹 User/Admin Setup
-let user = "";
-let isAdmin = false;
+// 🔹 Admin & User Setup
 const ADMIN_PASS = "9999";
+let isAdmin = false;
+let user="";
 
 // 🔹 Login
 function login() {
-  if (document.getElementById("username").value === "2025" &&
-      document.getElementById("password").value === "2025") {
-    user = "2025";
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("posts").style.display = "block";
-    document.getElementById("messageBox").style.display = "block";
+  let uname=document.getElementById("username").value;
+  let pass=document.getElementById("password").value;
+  
+  // Simple check: Normal user
+  if(uname==="2025" && pass==="2025"){
+    user=uname;
+    document.getElementById("authBox").style.display="none";
+    document.getElementById("posts").style.display="block";
+    document.getElementById("messageBox").style.display="block";
     loadPosts();
-  } else { 
-    alert("Wrong login"); 
+    alert("User logged in");
+  } else {
+    alert("Wrong login");
   }
 }
 
-// 🔹 Admin Panel Access
+// 🔹 Admin Mode
 function adminMode() {
-  let pass = prompt("Admin password");
-  if(pass === ADMIN_PASS){
-    isAdmin = true;
-    document.getElementById("adminBox").style.display = "block";
-    document.getElementById("adminMsgBox").style.display = "block";
+  let pass=prompt("Admin password");
+  if(pass===ADMIN_PASS){
+    isAdmin=true;
+    document.getElementById("adminBox").style.display="block";
+    document.getElementById("adminMsgBox").style.display="block";
     loadMessages();
   } else {
-    alert("Wrong admin password");
+    alert("Wrong password");
   }
 }
 
-// 🔹 User Messages
-function sendMsg() {
-  let text = document.getElementById("msgText").value;
-  if (!text) return;
+// 🔹 Send message
+function sendMsg(){
+  let text=document.getElementById("msgText").value;
+  if(!text) return;
   db.collection("messages").add({
-    user: user,
-    text: text,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => { document.getElementById("msgText").value=""; alert("Message sent to admin"); });
+    user:user,
+    text:text,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  }).then(()=>{ document.getElementById("msgText").value=""; alert("Message sent to admin"); });
 }
 
-function loadMessages() {
+// 🔹 Load Messages (Admin)
+function loadMessages(){
   db.collection("messages").orderBy("createdAt","desc").onSnapshot(snapshot=>{
     let html="";
     snapshot.forEach(doc=>{
-      let m = doc.data();
-      html += `<div class="msg"><b>${m.user}</b>: ${m.text}</div>`;
+      let m=doc.data();
+      html+=`<div class="msg"><b>${m.user}</b>: ${m.text}</div>`;
     });
-    document.getElementById("adminMessages").innerHTML = html;
+    document.getElementById("adminMessages").innerHTML=html;
   });
 }
 
 // 🔹 Admin Post
-function addPost() {
+function addPost(){
   if(!isAdmin) return;
   let text=document.getElementById("postText").value;
   if(!text) return;
@@ -80,23 +86,23 @@ function addPost() {
 }
 
 // 🔹 Load Posts
-function loadPosts() {
+function loadPosts(){
   db.collection("posts").orderBy("createdAt","desc").onSnapshot(snapshot=>{
     let html="";
     snapshot.forEach(doc=>{
-      let p = doc.data();
-      let id = doc.id;
-      let total = p.agree + p.disagree;
-      let agreePercent = total ? Math.round((p.agree/total)*100) : 0;
-      let disagreePercent = total ? Math.round((p.disagree/total)*100) : 0;
-      let voted = p.voted.includes(user);
-
-      let commentsHtml = "";
+      let p=doc.data();
+      let id=doc.id;
+      let total=p.agree+p.disagree;
+      let agreePercent=total?Math.round((p.agree/total)*100):0;
+      let disagreePercent=total?Math.round((p.disagree/total)*100):0;
+      let voted=p.voted.includes(user);
+      
+      let commentsHtml="";
       if(p.comments && p.comments.length>0){
-        p.comments.forEach(c=>{ commentsHtml += `<div class="comment">${c}</div>`; });
+        p.comments.forEach(c=>{ commentsHtml+=`<div class="comment">${c}</div>`; });
       }
-
-      html += `
+      
+      html+=`
       <div class="card">
         <b>Admin</b>
         <p>${p.text}</p>
@@ -116,7 +122,7 @@ function loadPosts() {
       </div>
       `;
     });
-    document.getElementById("posts").innerHTML = html;
+    document.getElementById("posts").innerHTML=html;
   });
 }
 
@@ -125,7 +131,7 @@ function vote(postId,type){
   let postRef=db.collection("posts").doc(postId);
   db.runTransaction(transaction=>{
     return transaction.get(postRef).then(doc=>{
-      if(!doc.exists) throw "Post missing!";
+      if(!doc.exists) throw "Post missing";
       let data=doc.data();
       if(!data.voted) data.voted=[];
       if(data.voted.includes(user)) return;
@@ -141,22 +147,21 @@ function vote(postId,type){
 function comment(postId){
   let text=document.getElementById("c"+postId).value;
   if(!text) return;
-  let postRef=db.collection("posts").doc(postId);
-  postRef.update({ comments: firebase.firestore.FieldValue.arrayUnion(user+": "+text) })
+  db.collection("posts").doc(postId).update({ comments:firebase.firestore.FieldValue.arrayUnion(user+": "+text) })
   .then(()=>{ document.getElementById("c"+postId).value=""; });
 }
 
 // 🔹 Admin Edit/Delete
 function editPost(postId){
-  let pass = prompt("Admin password");
+  let pass=prompt("Admin password");
   if(pass!==ADMIN_PASS) return alert("Wrong password");
-  let newText = prompt("Edit post");
+  let newText=prompt("Edit post");
   if(!newText) return;
   db.collection("posts").doc(postId).update({ text:newText });
 }
 
 function deletePost(postId){
-  let pass = prompt("Admin password");
+  let pass=prompt("Admin password");
   if(pass!==ADMIN_PASS) return alert("Wrong password");
   db.collection("posts").doc(postId).delete();
 }
